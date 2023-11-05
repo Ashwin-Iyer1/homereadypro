@@ -2,14 +2,11 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Slider from "./Slider";
+import checkHomeApproval from "./CheckHomeApproval";
 import BarChart from "./BarChart.png";
-
 function Form({ formData, setFormData }) {
 
-
-  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
-  const formRef = useRef();
 
   const [inputErrors, setInputErrors] = useState({
     grossMonthlyIncome: "",
@@ -28,6 +25,7 @@ function Form({ formData, setFormData }) {
     setFormData({ ...formData, [name]: value });
     validateInput(name, value);
   };
+
   const validateInput = (name, value) => {
     const minMaxValues = {
       grossMonthlyIncome: { min: 0, max: 10000 },
@@ -56,7 +54,6 @@ function Form({ formData, setFormData }) {
       firstErrorInput.scrollIntoView({ behavior: "smooth" });
     }
   };
-
 const [data, setData] = useState([
   { name: "CS", full_name: "Credit Score", Value: "", DesireRange: ">640", color: "" },
   { name: "LTV", full_name: "Loan-To-Value Ratio", Value: "", DesireRange: "<80%", color: "" },
@@ -69,13 +66,51 @@ const [data, setData] = useState([
   }       
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const fetchData = async () => {
+    const apiKey = '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';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are a mortgage analyst'
+            },
+            {
+              role: 'user',
+              content: `I am currently not approved for a loan, what can I do to get approved? Here are my statistics and please give me real life options to take for me to fix such issues. Answer in 2-3 sentences and give me really unique solutions and include my scores in your response so I know what they are - Credit Score: ${formData.creditScore}, Loan-To-Value Ratio: ${(((formData.appraisedValue - formData.downPayment)/formData.appraisedValue) * 100).toFixed(2)}, Debt To Income Ratio: ${(((formData.carPayment + formData.creditCardPayment + formData.monthlyMortgagePayment + formData.studentLoanPayments) / formData.grossMonthlyIncome) * 10).toFixed(2)}, Front-End-Debt To Income Ratio: ${((formData.monthlyMortgagePayment / formData.grossMonthlyIncome) * 100).toFixed(2)}`
+            }
+          ]
+        })
+      });
+
+      const data = await response.json();
+      console.log(data);
+      const message = data.choices[0].message.content;
+      document.querySelector('.GPTResponse').innerText += message;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
+    
     if (hasErrors) {
       // Scroll to the form element when there are errors
       scrollToFirstError();
     } else {
+      fetchData();
     setData(prevData => [
       {
         ...prevData[0],
@@ -99,6 +134,7 @@ const [data, setData] = useState([
       },
     ]);      
       const approvalStatus = checkHomeApproval(formData);
+
       if (approvalStatus == 'Y') {
         document.querySelector('.approval').innerText = 'You are approved';
         document.querySelector('.approval').style.color = "green";
@@ -114,18 +150,8 @@ const [data, setData] = useState([
     }
   };
 
-  const handleQuestionMarkHover = (num) => {
-    const popup = document.querySelector(".popup"+num);
-    popup.style.display = "block";
-  };
-
-  const handleQuestionMarkLeave = (num) => {
-    const popup = document.querySelector(".popup"+num);
-    popup.style.display = "none";
-  };
-
   return (
-    <div className="max-w-2xl mx-auto bg-gray-100 bg-opacity-10 p-6 rounded-md shadow-md mb-10">
+    <div className="max-w-2xl mx-auto bg-gray-100 bg-opacity-10 p-6 rounded-md shadow-md">
       <h1 className="text-1xl italic text-white mb-4">
         Complete the following fields to receive your homeownership eligibility
         status.
@@ -147,18 +173,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="grossMonthlyIncome" className="block font-semibold">
-            Gross Monthly Income {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(1)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(1)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup1 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Gross Monthly Income.
-        </div>
+            Gross Monthly Income
           </label>
           <input
             type="number"
@@ -185,18 +200,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="creditCardPayment" className="block font-semibold">
-            Credit Card Payment {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(2)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(2)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup2 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Credit Card Payment.
-        </div>
+            Credit Card Payment
           </label>
           <input
             type="number"
@@ -218,18 +222,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="downPayment" className="block font-semibold">
-            Car Payment {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(3)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(3)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup3 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Car Payment.
-        </div>
+            Car Payment
           </label>
           <input
             type="number"
@@ -249,18 +242,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="studentLoanPayments" className="block font-semibold">
-            Student Loan Payment {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(4)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(4)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup4 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Student Loan Payment.
-        </div>
+            Student Loan Payment
           </label>
           <input
             type="number"
@@ -282,18 +264,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="appraisedValue" className="block font-semibold">
-            Appraised Value {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(5)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(5)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup5 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Apprasied Value.
-        </div>
+            Appraised Value
           </label>
           <input
             type="number"
@@ -315,18 +286,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="downPayment" className="block font-semibold">
-            Down Payment {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(6)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(6)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup6 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Down Payment.
-        </div>
+            Down Payment
           </label>
           <input
             type="number"
@@ -346,18 +306,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="loanAmount" className="block font-semibold">
-            Loan Amount {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(7)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(7)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup7 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Loan Amount.
-        </div>
+            Loan Amount
           </label>
           <input
             type="number"
@@ -380,18 +329,7 @@ const [data, setData] = useState([
             htmlFor="monthlyMortgagePayment"
             className="block font-semibold"
           >
-            Monthly Mortgage Payment {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(8)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(8)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup8 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Monthly Mortgage Payment.
-        </div>
+            Monthly Mortgage Payment
           </label>
           <input
             type="number"
@@ -413,18 +351,7 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="creditScore" className="block font-semibold">
-            Credit Score {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(9)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(9)}
-        >
-        ?
-        </span>
-        {' )'}
-        <div className="popup9 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Credit Score.
-        </div>
+            Credit Score
           </label>
           <input
             type="number"
@@ -442,28 +369,28 @@ const [data, setData] = useState([
           />
         </div>
 
-        <div className="text-center mt-4">
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300"
-        >
-          Submit
+          className="relative bg-transparent text-white border border-white py-2 px-4 rounded-md hover:bg-gray-400 hover:border-gray-400 transition-colors duration-300 transform hover:scale-105 mt-2"  // Reduce the top margin to mt-2
+          >
+            Submit
         </button>
-        </div>
+
       </form>
       <button
-        type="Compare"
-        onClick={handleCompareClick}
-        className="fixed right-20 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 rounded-full w-40 h-40 text-white flex items-center justify-center transition-transform duration-300"
-      >
-        <img src={BarChart} />
-      </button>
-        
+  type="Compare"
+  onClick={handleCompareClick}
+  className="fixed right-20 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 rounded-full w-40 h-40 text-white flex flex-col items-center justify-center transition-transform duration-300"
+>
+  <img src={BarChart} alt="Bar Chart" className="w=60 h-30 mb-1" />
+  <div className="text-center text-xl">Charts</div>
+</button>
 
       <br/>
       <h1 className="approval"></h1>
+      <p className="GPTResponse text-white"></p>
       <br/>
-      <table className="w-full bg-opacity-50 bg-black border-white border rounded p-4 mx-auto text-white">
+      <table className="w-full bg-opacity-10 bg-white border-white border rounded-md p-4 mx-auto text-white">
   <thead>
     <tr>
       <th className="text-white">Name</th>
@@ -483,7 +410,10 @@ const [data, setData] = useState([
     ))}
   </tbody>
 </table>
+<script>
+</script>
     </div>
+    
   );
 }
 
