@@ -11,13 +11,6 @@ function Form({ formData, setFormData }) {
   const [inputErrors, setInputErrors] = useState({
     grossMonthlyIncome: "",
     creditCardPayment: "",
-    carPayment: "",
-    studentLoanPayments: "",
-    appraisedValue: "",
-    downPayment: "",
-    loanAmount: "",
-    monthlyMortgagePayment: "",
-    creditScore: "",
     // Add other input fields here
   });
 
@@ -36,14 +29,8 @@ function Form({ formData, setFormData }) {
   const validateInput = (name, value) => {
     const minMaxValues = {
       grossMonthlyIncome: { min: 0, max: 10000 },
-      creditCardPayment: { min: 0, max: 5000 },
-      carPayment: { min: 0, max: 1000 },
-      studentLoanPayments: { min: 0, max: 10000 },
-      appraisedValue: { min: 0, max: 1000000 },
-      downPayment: { min: 0, max: 100000 },
-      loanAmount: { min: 0, max: 20000 },
-      monthlyMortgagePayment: { min: 0, max: 20000 },
-      creditScore: { min: 0, max: 850 },
+      creditCardPayment: { min: 0, max: 850 },
+      // Add min and max values for other input fields here
     };
 
     if (value < minMaxValues[name].min || value > minMaxValues[name].max) {
@@ -76,7 +63,7 @@ const [data, setData] = useState([
   const handleCompareClick = (e) => {
     e.preventDefault();
     navigate("/submission");
-  };
+  }       
 
   // Handle form submission
   const fetchData = async () => {
@@ -158,7 +145,7 @@ const [data, setData] = useState([
       }
       console.log("Approval Status:", approvalStatus);
 
-      // navigate("/submission");
+            // navigate("/submission");
       // You can process the form data here
     }
   };
@@ -194,7 +181,7 @@ const [data, setData] = useState([
             value={formData.grossMonthlyIncome}
             onChange={handleInputChange}
             className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.grossMonthlyIncome ? "border-red-500" : ""
+              inputErrors.grossMonthlyIncome ? "input-error" : ""
             }`}
           />
           {inputErrors.grossMonthlyIncome && (
@@ -220,13 +207,8 @@ const [data, setData] = useState([
             name="creditCardPayment"
             value={formData.creditCardPayment}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.creditCardPayment ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.creditCardPayment && (
-            <p className="text-red-500">{inputErrors.creditCardPayment}</p>
-          )}
           <Slider
             min={0}
             max={850}
@@ -247,13 +229,8 @@ const [data, setData] = useState([
             name="carPayment"
             value={formData.carPayment}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.carPayment ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.carPayment && (
-            <p className="text-red-500">{inputErrors.carPayment}</p>
-          )}
           <Slider
             min={0}
             max={1000}
@@ -272,13 +249,8 @@ const [data, setData] = useState([
             name="studentLoanPayments"
             value={formData.studentLoanPayments}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.studentLoanPayments ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.studentLoanPayments && (
-            <p className="text-red-500">{inputErrors.studentLoanPayments}</p>
-          )}
           <Slider
             min={0}
             max={20000}
@@ -299,13 +271,8 @@ const [data, setData] = useState([
             name="appraisedValue"
             value={formData.appraisedValue}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.appraisedValue ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.appraisedValue && (
-            <p className="text-red-500">{inputErrors.appraisedValue}</p>
-          )}
           <Slider
             min={0}
             max={1000000}
@@ -326,13 +293,8 @@ const [data, setData] = useState([
             name="downPayment"
             value={formData.downPayment}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.downPayment ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.downPayment && (
-            <p className="text-red-500">{inputErrors.downPayment}</p>
-          )}
           <Slider
             min={0}
             max={100000}
@@ -344,31 +306,15 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="loanAmount" className="block font-semibold">
-            Loan Amount {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(7)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(7)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup7 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Loan Amount.
-        </div>
+            Loan Amount
           </label>
           <input
             type="number"
             name="loanAmount"
             value={formData.loanAmount}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.loanAmount ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.loanAmount && (
-            <p className="text-red-500">{inputErrors.loanAmount}</p>
-          )}
           <Slider
             min={0}
             max={20000}
@@ -383,31 +329,15 @@ const [data, setData] = useState([
             htmlFor="monthlyMortgagePayment"
             className="block font-semibold"
           >
-            Monthly Mortgage Payment {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(8)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(8)}
-        >
-          ?
-        </span>
-        {' )'}
-        <div className="popup8 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Monthly Mortgage Payment.
-        </div>
+            Monthly Mortgage Payment
           </label>
           <input
             type="number"
             name="monthlyMortgagePayment"
             value={formData.monthlyMortgagePayment}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.monthlyMortgagePayment ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.monthlyMortgagePayment && (
-            <p className="text-red-500">{inputErrors.monthlyMortgagePayment}</p>
-          )}
           <Slider
             min={0}
             max={20000}
@@ -421,31 +351,15 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="creditScore" className="block font-semibold">
-            Credit Score {'('}
-            <span
-          className="question-mark text-blue-500 ml-1 cursor-pointer"
-          onMouseEnter={(e) => handleQuestionMarkHover(9)}
-          onMouseLeave={(e) => handleQuestionMarkLeave(9)}
-        >
-        ?
-        </span>
-        {' )'}
-        <div className="popup9 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
-          This is a short explanation of Credit Score.
-        </div>
+            Credit Score
           </label>
           <input
             type="number"
             name="creditScore"
             value={formData.creditScore}
             onChange={handleInputChange}
-            className={`bg-gray-900 border p-2 w-full rounded-md text-white ${
-              inputErrors.creditScore ? "border-red-500" : ""
-            }`}
+            className="bg-gray-900 border p-2 w-full rounded-md text-white"
           />
-          {inputErrors.creditScore && (
-            <p className="text-red-500">{inputErrors.creditScore}</p>
-          )}
           <Slider
             min={0}
             max={850}
