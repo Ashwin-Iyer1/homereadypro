@@ -11,7 +11,7 @@ export default function Chart({ jsonData }) {
   const [pmiRequiredCount, setPmiRequiredCount] = useState(0);
   const [rejectedCount, setRejectedCount] = useState(0);
 
-  useEffect(() => {  
+  useEffect(() => {
     jsonData.forEach((item) => {
       const {
         loanAmount,
@@ -26,16 +26,10 @@ export default function Chart({ jsonData }) {
         ((item.CreditCardPayment + item.CarPayment + item.StudentLoanPayments) /
           item.GrossMonthlyIncome) *
         100;
-      const FEDTI = (item.MonthlyMortgagePayment / item.GrossMonthlyIncome) * 100;
+      const FEDTI =
+        (item.MonthlyMortgagePayment / item.GrossMonthlyIncome) * 100;
 
-      if (
-        item.CreditScore >= 640 &&
-        LTV < 80 &&
-        LTV >= 80 &&
-        LTV <= 95 &&
-        DTI <= 43 &&
-        FEDTI <= 28
-      ) {
+      if (item.CreditScore >= 640 && LTV < 80 && DTI <= 43 && FEDTI <= 28) {
         setApprovedCount((count) => count + 1);
       } else if (
         item.CreditScore >= 640 &&
@@ -51,13 +45,12 @@ export default function Chart({ jsonData }) {
     });
   }, [jsonData]);
 
-
   const data = {
     labels: ["Approved", "PMI Required", "Rejected"],
     datasets: [
       {
         label: "Percentage Approved",
-        data: [approvedCount/4, pmiRequiredCount/4, rejectedCount/4],
+        data: [approvedCount, pmiRequiredCount, rejectedCount],
         backgroundColor: [
           "rgba(0, 255, 0, 0.2)",
           "rgba(255, 255, 0, 0.2)",
