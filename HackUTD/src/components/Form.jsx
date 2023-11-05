@@ -67,7 +67,7 @@ const [data, setData] = useState([
 
   // Handle form submission
   const fetchData = async () => {
-    const apiKey = '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';
+    const apiKey = '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';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
     try {
@@ -149,9 +149,17 @@ const [data, setData] = useState([
       // You can process the form data here
     }
   };
+  const handleQuestionMarkHover = (num) => {
+    const popup = document.querySelector(".popup"+num);
+    popup.style.display = "block";
+  };
 
+  const handleQuestionMarkLeave = (num) => {
+    const popup = document.querySelector(".popup"+num);
+    popup.style.display = "none";
+  };
   return (
-    <div className="max-w-2xl mx-auto bg-gray-100 bg-opacity-10 p-6 rounded-md shadow-md">
+    <div className="max-w-2xl mx-auto bg-gray-100 bg-opacity-10 p-6 rounded-md shadow-md mb-10">
       <h1 className="text-1xl italic text-white mb-4">
         Complete the following fields to receive your homeownership eligibility
         status.
@@ -173,7 +181,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="grossMonthlyIncome" className="block font-semibold">
-            Gross Monthly Income
+            Gross Monthly Income {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(1)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(1)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup1 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Gross Monthly Income.
+        </div>
           </label>
           <input
             type="number"
@@ -200,7 +219,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="creditCardPayment" className="block font-semibold">
-            Credit Card Payment
+            Credit Card Payment {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(2)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(2)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup2 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Credit Card Payment.
+        </div>
           </label>
           <input
             type="number"
@@ -222,7 +252,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="downPayment" className="block font-semibold">
-            Car Payment
+            Car Payment {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(3)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(3)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup3 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Car Payment.
+        </div>
           </label>
           <input
             type="number"
@@ -242,7 +283,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="studentLoanPayments" className="block font-semibold">
-            Student Loan Payment
+            Student Loan Payment {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(4)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(4)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup4 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Student Loan Payment.
+        </div>
           </label>
           <input
             type="number"
@@ -264,7 +316,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="appraisedValue" className="block font-semibold">
-            Appraised Value
+            Appraised Value {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(5)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(5)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup5 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Apprasied Value.
+        </div>
           </label>
           <input
             type="number"
@@ -286,7 +349,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="downPayment" className="block font-semibold">
-            Down Payment
+            Down Payment {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(6)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(6)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup6 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Down Payment.
+        </div>
           </label>
           <input
             type="number"
@@ -306,7 +380,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="loanAmount" className="block font-semibold">
-            Loan Amount
+            Loan Amount {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(7)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(7)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup7 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Loan Amount.
+        </div>
           </label>
           <input
             type="number"
@@ -329,7 +414,18 @@ const [data, setData] = useState([
             htmlFor="monthlyMortgagePayment"
             className="block font-semibold"
           >
-            Monthly Mortgage Payment
+            Monthly Mortgage Payment {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(8)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(8)}
+        >
+          ?
+        </span>
+        {' )'}
+        <div className="popup8 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Monthly Mortgage Payment.
+        </div>
           </label>
           <input
             type="number"
@@ -351,7 +447,18 @@ const [data, setData] = useState([
 
         <div className="mb-4">
           <label htmlFor="creditScore" className="block font-semibold">
-            Credit Score
+            Credit Score {'('}
+            <span
+          className="question-mark text-blue-500 ml-1 cursor-pointer"
+          onMouseEnter={(e) => handleQuestionMarkHover(9)}
+          onMouseLeave={(e) => handleQuestionMarkLeave(9)}
+        >
+        ?
+        </span>
+        {' )'}
+        <div className="popup9 absolute bg-white border p-2 rounded-md text-sm shadow-md hidden text-black">
+          This is a short explanation of Credit Score.
+        </div>
           </label>
           <input
             type="number"
@@ -369,28 +476,28 @@ const [data, setData] = useState([
           />
         </div>
 
+        <div className="text-center mt-4">
         <button
           type="submit"
-          className="relative bg-transparent text-white border border-white py-2 px-4 rounded-md hover:bg-gray-400 hover:border-gray-400 transition-colors duration-300 transform hover:scale-105 mt-2"  // Reduce the top margin to mt-2
-          >
-            Submit
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300"
+        >
+          Submit
         </button>
-
+                </div>
       </form>
       <button
-  type="Compare"
-  onClick={handleCompareClick}
-  className="fixed right-20 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 rounded-full w-40 h-40 text-white flex flex-col items-center justify-center transition-transform duration-300"
->
-  <img src={BarChart} alt="Bar Chart" className="w=60 h-30 mb-1" />
-  <div className="text-center text-xl">Charts</div>
-</button>
+          type="Compare"
+          onClick={handleCompareClick}
+          className="relative bg-transparent text-white border border-white py-2 px-4 rounded-md hover:bg-gray-400 hover:border-gray-400 transition-colors duration-300 transform hover:scale-105 mt-2"  // Reduce the top margin to mt-2
+          >
+            Compare
+        </button>
 
       <br/>
       <h1 className="approval"></h1>
       <p className="GPTResponse text-white"></p>
       <br/>
-      <table className="w-full bg-opacity-10 bg-white border-white border rounded-md p-4 mx-auto text-white">
+      <table className="w-full bg-opacity-50 bg-black border-white border rounded p-4 mx-auto text-white">
   <thead>
     <tr>
       <th className="text-white">Name</th>
@@ -410,10 +517,7 @@ const [data, setData] = useState([
     ))}
   </tbody>
 </table>
-<script>
-</script>
     </div>
-    
   );
 }
 
