@@ -67,7 +67,7 @@ const [data, setData] = useState([
 
   // Handle form submission
   const fetchData = async () => {
-    const apiKey = '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';
+    const apiKey = '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';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
     try {
