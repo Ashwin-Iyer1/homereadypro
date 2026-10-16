@@ -1,36 +1,24 @@
 {
-  "name": "hackutd",
+  "name": "homereadypro-scenario-studio",
+  "version": "2.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 127.0.0.1 --port 4199 --strictPort",
     "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test tests/*.test.js",
+    "test:ui": "playwright test"
   },
   "dependencies": {
-    "@chatscope/chat-ui-kit-react": "^1.10.1",
-    "firebase": "^10.5.2",
-    "openai": "^4.15.3",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
-    "react-router-dom": "^6.18.0"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.2.0",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.0.3",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
-    "vite": "^4.4.5"
+    "vite": "8.3.4",
+    "@playwright/test": "1.64.1"
+  },
+  "engines": {
+    "node": ">=22.12"
   }
 }
